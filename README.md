@@ -2,6 +2,10 @@
 
 Interactive Flask + JavaScript map dashboard for college buses.
 
+## 🚀 Live Demo
+
+👉 https://college-bus-live-tracking-mv52.onrender.com
+
 ## Features
 - Multiple buses
 - Interactive Leaflet map
