@@ -1,0 +1,5 @@
+const map=L.map("map").setView([13.6288,79.4192],13);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{attribution:"&copy; OpenStreetMap contributors"}).addTo(map);let buses=[],markers={},step=0;
+async function loadBuses(){const r=await fetch("/api/buses");buses=await r.json();buses.forEach(bus=>{markers[bus.id]=L.marker(bus.position).addTo(map).bindPopup(`<b>${bus.name}</b><br>${bus.route}`)});renderList();updateMarkers()}
+function renderList(){const list=document.querySelector("#bus-list");list.innerHTML="";buses.forEach(bus=>{const d=document.createElement("div");d.className="bus-card";d.innerHTML=`<h3>${bus.name}</h3><p>Route: ${bus.route}</p><p>Driver: ${bus.driver}</p><p class="status">● Running</p>`;d.onclick=()=>{map.setView(bus.position,15);markers[bus.id].openPopup()};list.appendChild(d)})}
+function updateMarkers(){step++;buses.forEach((bus,i)=>{const lat=bus.position[0]+Math.sin(step/8+i)*.004;const lng=bus.position[1]+Math.cos(step/8+i)*.004;markers[bus.id].setLatLng([lat,lng])});document.querySelector("#updated").textContent="Last update: "+new Date().toLocaleTimeString()}
+loadBuses();setInterval(updateMarkers,2000);
